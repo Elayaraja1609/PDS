@@ -2,11 +2,13 @@
 using Application.Interfaces;
 using Application.Services;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+	[AllowAnonymous]
 	public class UserController(IUserService userService) : BaseApiController
 	{
 		[HttpPost("register")]
