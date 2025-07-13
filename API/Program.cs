@@ -48,7 +48,7 @@ builder.Services.AddCors(options =>
 {
 	options.AddPolicy("AllowAll", policy =>
 	{
-		policy.WithOrigins("https://poultry-web-ui-g9gje6duanhuajgn.canadacentral-01.azurewebsites.net/")// replace with actual UI URL
+		policy.WithOrigins("https://poultry-web-ui-g9gje6duanhuajgn.canadacentral-01.azurewebsites.net","http://localhost:4200")// replace with actual UI URL
 			  .AllowAnyHeader()
 			  .AllowAnyMethod();
 	});
