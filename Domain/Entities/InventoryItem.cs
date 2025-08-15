@@ -1,7 +1,8 @@
 ﻿namespace Domain.Entities;
 
-public class InventoryItem : BaseEntity
+public class InventoryItem 
 {
+	public int Id { get; set; }
 	public int FarmId { get; set; }
 	public required Farm Farm { get; set; }
 

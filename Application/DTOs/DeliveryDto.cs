@@ -9,6 +9,8 @@ public class DeliveryDto
 	public string Area { get; set; }
 	public double TotalWeightLoaded { get; set; }
 	public double RemainingWeight { get; set; }
+	public double TotalAmount { get; set; }
+	public double PricePerKg { get; set; }
 
 	public int VehicleId { get; set; }
 	//public Vehicle Vehicle { get; set; }
@@ -18,7 +20,13 @@ public class DeliveryDto
 
 	public int FarmStockId { get; set; }
 	//public FarmStock FarmStock { get; set; }
+	public int? AssistantId { get; set; }
+	public string Route { get; set; }
+	public string Status { get; set; } // Pending, InProgress, Completed, Cancelled
+	public DateTime? StartTime { get; set; }
+	public DateTime? EndTime { get; set; }
 
 	public ICollection<OrderDto>? Orders { get; set; }
 	public ICollection<TransportCost>? TransportCosts { get; set; }
+	public ICollection<MiscExpenseDto>? MiscExpenses { get; set; }
 }

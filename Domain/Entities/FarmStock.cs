@@ -1,7 +1,8 @@
 ﻿namespace Domain.Entities;
 
-public class FarmStock:BaseEntity
+public class FarmStock
 {
+	public int Id { get; set; }
 	public DateTime Date { get; set; }
 	public double QuantityAvailableInKg { get; set; }
 	//public double RemainingAvailableInKg { get; set; }

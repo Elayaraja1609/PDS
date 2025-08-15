@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.DTOs.ResponsesDto.cs;
+using Application.Interfaces;
 using Domain.Entities;
 
 namespace Infrastructure.Data;
@@ -18,6 +19,14 @@ public class UnitOfWork: IUnitOfWork
 	private IGenericRepo<Payment>? _payments;
 	private IGenericRepo<TransportCost>? _transportCosts;
 	private IGenericRepo<MiscExpense>? _miscExpenses;
+	private IGenericRepo<DeliveryDetail>? _deliveryDetail;
+	private IGenericRepo<DeliveryUpdatesResDto>? _deliveryUpdatesRes;
+	
+	// New repositories
+	private IGenericRepo<DailyWorkLog>? _dailyWorkLogs;
+	private IGenericRepo<Expense>? _expenses;
+	private IGenericRepo<Salary>? _salaries;
+	
 	public UnitOfWork(AppDbContext context)
 	{
 		_context = context;
@@ -34,7 +43,14 @@ public class UnitOfWork: IUnitOfWork
 	public IGenericRepo<Payment> Payments => _payments ??= new GenericRepo<Payment>(_context);
 	public IGenericRepo<TransportCost> TransportCosts => _transportCosts ??= new GenericRepo<TransportCost>(_context);
 	public IGenericRepo<MiscExpense> MiscExpenses => _miscExpenses ??= new GenericRepo<MiscExpense>(_context);
-
+	public IGenericRepo<DeliveryDetail> DeliveryDetails => _deliveryDetail ??= new GenericRepo<DeliveryDetail>(_context);
+	public IGenericRepo<DeliveryUpdatesResDto> DeliveryUpdatesRes => _deliveryUpdatesRes ??= new GenericRepo<DeliveryUpdatesResDto>(_context);
+	
+	// New repository properties
+	public IGenericRepo<DailyWorkLog> DailyWorkLogs => _dailyWorkLogs ??= new GenericRepo<DailyWorkLog>(_context);
+	public IGenericRepo<Expense> Expenses => _expenses ??= new GenericRepo<Expense>(_context);
+	public IGenericRepo<Salary> Salaries => _salaries ??= new GenericRepo<Salary>(_context);
+	
 	public async Task<int> CompleteAsync()
 	{
 		return await _context.SaveChangesAsync();

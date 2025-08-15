@@ -43,7 +43,7 @@ public class UserService : IUserService
 		{
 			return false;
 		}
-		return _unitOfWork.AppUsers.IsExist(user.Id);
+		return true;
 	}
 
 	public async Task<User> RegisterAsync(string Firstname, string Lastname, string Mobile, string Location, string username, string password, string role)

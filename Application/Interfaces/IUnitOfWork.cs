@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.DTOs.ResponsesDto.cs;
+using Domain.Entities;
 
 namespace Application.Interfaces;
 
@@ -16,5 +17,7 @@ public interface IUnitOfWork: IDisposable
 	IGenericRepo<Payment>Payments { get; }
 	IGenericRepo<TransportCost>TransportCosts { get; }
 	IGenericRepo<MiscExpense>MiscExpenses { get; }
+	IGenericRepo<DeliveryDetail> DeliveryDetails { get; }
+	IGenericRepo<DeliveryUpdatesResDto> DeliveryUpdatesRes { get; }
 	Task<int> CompleteAsync();
 }

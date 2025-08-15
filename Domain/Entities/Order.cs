@@ -1,7 +1,8 @@
 ﻿namespace Domain.Entities;
 
-public class Order:BaseEntity
+public class Order
 {
+	public int Id { get; set; }
 	public DateTime OrderDate { get; set; }
 	public double QuantityInKg { get; set; }
 	public decimal RatePerKg { get; set; }

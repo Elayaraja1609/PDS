@@ -24,6 +24,12 @@ builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<ITransportCostService, TransportCostService>();
 builder.Services.AddScoped<IMiscExpenseService, MiscExpenseService>();
 
+// New services
+builder.Services.AddScoped<IDailyWorkLogService, DailyWorkLogService>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
+builder.Services.AddScoped<ISalaryService, SalaryService>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(opt =>
@@ -75,7 +81,10 @@ builder.Services.AddSwaggerGen(c =>
 				Reference = new OpenApiReference{
 					Type = ReferenceType.SecurityScheme,
 					Id = "Bearer"
-				}
+				},
+				Scheme = "oauth2",
+				Name = "Bearer",
+				In = ParameterLocation.Header,
 			},
 			Array.Empty<string>()
 		}

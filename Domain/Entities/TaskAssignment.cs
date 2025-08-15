@@ -1,7 +1,8 @@
 ﻿namespace Domain.Entities;
 
-public class TaskAssignment:BaseEntity
+public class TaskAssignment
 {
+	public int Id { get; set; }
 	public Guid LaborId { get; set; }
 	public required Labor Labor { get; set; }
 
