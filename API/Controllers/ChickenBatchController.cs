@@ -24,12 +24,24 @@ namespace API.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> Create([FromBody] ChickenBatchDto batch)
+		public async Task<ActionResult> Create([FromBody] CreateChickenBatchDto batch)
 		{
 			try
 			{
-				await CBService.AddAsync(batch);
-				return CreatedAtAction(nameof(GetById), new { id = batch.Id }, batch);
+				var chickenBatchDto = new ChickenBatchDto
+				{
+					CollectionDate = batch.CollectionDate,
+					NumberOfChickens = batch.NumberOfChickens,
+					QuantityInKg = batch.QuantityInKg,
+					Type = batch.Type,
+					Notes = batch.Notes,
+					FarmerId = batch.FarmerId,
+					FarmerName = batch.FarmerName,
+					CollectionWeight = batch.CollectionWeight
+				};
+				
+				await CBService.AddAsync(chickenBatchDto);
+				return CreatedAtAction(nameof(GetById), new { id = chickenBatchDto.Id }, chickenBatchDto);
 			}
 			catch (Exception ex)
 			{
@@ -38,12 +50,23 @@ namespace API.Controllers
 		}
 
 		[HttpPut("{id}")]
-		public async Task<ActionResult> Update(int id, [FromBody] ChickenBatchDto batch)
+		public async Task<ActionResult> Update(int id, [FromBody] CreateChickenBatchDto batch)
 		{
-			if (id != batch.Id) return BadRequest("ID mismatch");
 			try
 			{
-				await CBService.UpdateAsync(batch);
+				var chickenBatchDto = new ChickenBatchDto
+				{
+					CollectionDate = batch.CollectionDate,
+					NumberOfChickens = batch.NumberOfChickens,
+					QuantityInKg = batch.QuantityInKg,
+					Type = batch.Type,
+					Notes = batch.Notes,
+					FarmerId = batch.FarmerId,
+					FarmerName = batch.FarmerName,
+					CollectionWeight = batch.CollectionWeight
+				};
+				
+				await CBService.UpdateAsync(id, chickenBatchDto);
 				return Ok(new
 				{
 					StatusCode = StatusCodes.Status200OK,
@@ -72,23 +95,6 @@ namespace API.Controllers
 			{
 				return NotFound(new { error = ex.Message });
 			}
-		}
-
-		[HttpGet("farmer/{farmerId}")]
-		public async Task<ActionResult<IEnumerable<ChickenBatchDto>>> GetByFarmer(int farmerId)
-		{
-			var result = await CBService.GetByFarmerIdAsync(farmerId);
-			return Ok(result);
-		}
-
-		[HttpGet("date/{date}")]
-		public async Task<ActionResult<IEnumerable<ChickenBatchDto>>> GetByDate(string date)
-		{
-			if (!DateTime.TryParse(date, out var parsedDate))
-				return BadRequest("Invalid date format");
-
-			var result = await CBService.GetByDateAsync(parsedDate);
-			return Ok(result);
 		}
 	}
 }

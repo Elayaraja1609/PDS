@@ -21,18 +21,18 @@ public static class DataSeeder
 
 		// 🐥 Chicken Batches
 		modelBuilder.Entity<ChickenBatch>().HasData(
-			new ChickenBatch { Id = 1, CollectionDate = DateTime.Today, QuantityInKg = 300, Type = "Broiler",Status="InStock", NumberOfChickens=50,Notes="", FarmerId=1, FarmStockId =1},
-			new ChickenBatch { Id = 2, CollectionDate = DateTime.Today, QuantityInKg = 200, Type = "Layer", Status = "Dispatched", NumberOfChickens = 40, Notes = "", FarmerId=2, FarmStockId =1}
+			new ChickenBatch { Id = 1, CollectionDate = DateTime.Today, QuantityInKg = 300, Type = "Broiler", Status = "InStock", NumberOfChickens = 50, Notes = "", FarmerId = 1, FarmerName = "Ramu" },
+			new ChickenBatch { Id = 2, CollectionDate = DateTime.Today, QuantityInKg = 200, Type = "Layer", Status = "Dispatched", NumberOfChickens = 40, Notes = "", FarmerId = 2, FarmerName = "Kumar" }
 		);
 
 		// 🚛 Vehicles
 		modelBuilder.Entity<Vehicle>().HasData(
-			new Vehicle { Id = 1, VehicleNumber = "TN01AA1234", Type = "Small Van", CapacityInKg = 400 }
+			new Vehicle { Id = 1, VehicleNumber = "TN01AA1234", Type = "Small Van", CapacityInKg = 400, Brand = "Tata", FuelType = "Diesel", Model = "Ace", Status = "Active" }
 		);
 
 		// 👨‍✈️ Drivers
 		modelBuilder.Entity<Driver>().HasData(
-			new Driver { Id = 1, Name = "Ravi", PhoneNumber = "999-888-7777" }
+			new Driver { Id = 1, Name = "Ravi", PhoneNumber = "999-888-7777", Role = "Driver" }
 		);
 
 		// 🚚 Delivery
@@ -46,7 +46,9 @@ public static class DataSeeder
 				RemainingWeight = 0,
 				DriverId = 1,
 				VehicleId = 1,
-				FarmStockId = 1
+				Route = "Default Route",
+				Status = "Pending"
+				//FarmStockId = 1
 			}
 		);
 

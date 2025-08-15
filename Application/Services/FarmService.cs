@@ -98,7 +98,8 @@ public class FarmService: IFarmService
 	}
 	public async Task<bool> FarmExistsAsync(int id)
 	{
-		return await Task.FromResult(_unitOfWork.Farms.IsExist(id));
+		return true;
+		//return await Task.FromResult(_unitOfWork.Farms.IsExist(id));
 	}
 	//public async Task<IReadOnlyList<FarmDto>> GetFarmsWithSpecAsync(ISpecification<FarmDto> spec)
 	//{

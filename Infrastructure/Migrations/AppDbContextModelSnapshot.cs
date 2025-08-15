@@ -22,6 +22,14 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Application.DTOs.ResponsesDto.cs.DeliveryUpdatesResDto", b =>
+                {
+                    b.Property<int>("DeliveryId")
+                        .HasColumnType("int");
+
+                    b.ToTable("DeliveryUpdates");
+                });
+
             modelBuilder.Entity("Domain.Entities.ChickenBatch", b =>
                 {
                     b.Property<int>("Id")
@@ -33,11 +41,24 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CollectionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FarmStockId")
+                    b.Property<double>("CollectionWeight")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeliveryId")
                         .HasColumnType("int");
 
                     b.Property<int>("FarmerId")
                         .HasColumnType("int");
+
+                    b.Property<string>("FarmerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
@@ -46,6 +67,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<double>("QuantityInKg")
+                        .HasColumnType("float");
+
+                    b.Property<double>("RemainingQuantityInKg")
                         .HasColumnType("float");
 
                     b.Property<string>("Status")
@@ -58,6 +82,8 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DeliveryId");
+
                     b.HasIndex("FarmerId");
 
                     b.ToTable("ChickenBatches");
@@ -66,27 +92,94 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CollectionDate = new DateTime(2025, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
-                            FarmStockId = 1,
+                            CollectionDate = new DateTime(2025, 8, 13, 0, 0, 0, 0, DateTimeKind.Local),
+                            CollectionWeight = 0.0,
+                            CreatedAt = new DateTime(2025, 8, 13, 15, 12, 18, 907, DateTimeKind.Utc).AddTicks(2399),
                             FarmerId = 1,
+                            FarmerName = "Ramu",
+                            IsActive = true,
                             Notes = "",
                             NumberOfChickens = 50,
                             QuantityInKg = 300.0,
+                            RemainingQuantityInKg = 0.0,
                             Status = "InStock",
                             Type = "Broiler"
                         },
                         new
                         {
                             Id = 2,
-                            CollectionDate = new DateTime(2025, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
-                            FarmStockId = 1,
+                            CollectionDate = new DateTime(2025, 8, 13, 0, 0, 0, 0, DateTimeKind.Local),
+                            CollectionWeight = 0.0,
+                            CreatedAt = new DateTime(2025, 8, 13, 15, 12, 18, 907, DateTimeKind.Utc).AddTicks(2407),
                             FarmerId = 2,
+                            FarmerName = "Kumar",
+                            IsActive = true,
                             Notes = "",
                             NumberOfChickens = 40,
                             QuantityInKg = 200.0,
+                            RemainingQuantityInKg = 0.0,
                             Status = "Dispatched",
                             Type = "Layer"
                         });
+                });
+
+            modelBuilder.Entity("Domain.Entities.DailyWorkLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AssistantId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double?>("DailyAllowance")
+                        .HasColumnType("float");
+
+                    b.Property<int>("DriverId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan?>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<double?>("FuelExpense")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("IsPresent")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Route")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan?>("StartTime")
+                        .HasColumnType("time");
+
+                    b.Property<double?>("TollCharges")
+                        .HasColumnType("float");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("WorkDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssistantId");
+
+                    b.HasIndex("DriverId");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("DailyWorkLogs");
                 });
 
             modelBuilder.Entity("Domain.Entities.Delivery", b =>
@@ -101,16 +194,36 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("AssistantId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("DriverId")
                         .HasColumnType("int");
 
-                    b.Property<int>("FarmStockId")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("PricePerKg")
+                        .HasColumnType("float");
 
                     b.Property<double>("RemainingWeight")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Route")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("TotalAmount")
                         .HasColumnType("float");
 
                     b.Property<double>("TotalWeightLoaded")
@@ -121,9 +234,9 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DriverId");
+                    b.HasIndex("AssistantId");
 
-                    b.HasIndex("FarmStockId");
+                    b.HasIndex("DriverId");
 
                     b.HasIndex("VehicleId");
 
@@ -134,13 +247,64 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             Area = "Market Area",
-                            DeliveryDate = new DateTime(2025, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            DeliveryDate = new DateTime(2025, 8, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             DriverId = 1,
-                            FarmStockId = 1,
+                            PricePerKg = 0.0,
                             RemainingWeight = 0.0,
+                            Route = "Default Route",
+                            Status = "Pending",
+                            TotalAmount = 0.0,
                             TotalWeightLoaded = 250.0,
                             VehicleId = 1
                         });
+                });
+
+            modelBuilder.Entity("Domain.Entities.DeliveryDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DeliveryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DeliveryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("PricePerKg")
+                        .HasColumnType("float");
+
+                    b.Property<double>("QuantityDelivered")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ShopId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Signature")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("TotalAmount")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliveryId");
+
+                    b.HasIndex("ShopId");
+
+                    b.ToTable("DeliveryDetails");
                 });
 
             modelBuilder.Entity("Domain.Entities.Driver", b =>
@@ -151,6 +315,33 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("BaseSalary")
+                        .HasColumnType("float");
+
+                    b.Property<double>("DailyRate")
+                        .HasColumnType("float");
+
+                    b.Property<string>("EmergencyContact")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmergencyContactPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("JoinDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LicenseExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LicenseNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -158,6 +349,13 @@ namespace Infrastructure.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("TerminationDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -167,9 +365,69 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
+                            BaseSalary = 0.0,
+                            DailyRate = 0.0,
+                            IsActive = true,
+                            JoinDate = new DateTime(2025, 8, 13, 15, 12, 18, 907, DateTimeKind.Utc).AddTicks(2449),
                             Name = "Ravi",
-                            PhoneNumber = "999-888-7777"
+                            PhoneNumber = "999-888-7777",
+                            Role = "Driver"
                         });
+                });
+
+            modelBuilder.Entity("Domain.Entities.Expense", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DriverId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ExpenseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiptNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DriverId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("Expenses");
                 });
 
             modelBuilder.Entity("Domain.Entities.Farm", b =>
@@ -249,7 +507,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2025, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            Date = new DateTime(2025, 8, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             NoOfChickens = 250,
                             QuantityAvailableInKg = 500.0
                         });
@@ -282,7 +540,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             Amount = 300m,
-                            Date = new DateTime(2025, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            Date = new DateTime(2025, 8, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             Description = "Ice Packing"
                         });
                 });
@@ -333,7 +591,7 @@ namespace Infrastructure.Migrations
                             Id = 1,
                             BalanceAmount = 0m,
                             DeliveryId = 1,
-                            OrderDate = new DateTime(2025, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDate = new DateTime(2025, 8, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             PaidAmount = 20000m,
                             QuantityInKg = 150.0,
                             RatePerKg = 150m,
@@ -345,7 +603,7 @@ namespace Infrastructure.Migrations
                             Id = 2,
                             BalanceAmount = 0m,
                             DeliveryId = 1,
-                            OrderDate = new DateTime(2025, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            OrderDate = new DateTime(2025, 8, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             PaidAmount = 12000m,
                             QuantityInKg = 100.0,
                             RatePerKg = 160m,
@@ -396,7 +654,7 @@ namespace Infrastructure.Migrations
                             AmountPaid = 20000m,
                             ModeOfPayment = "Cash",
                             OrderId = 1,
-                            PaymentDate = new DateTime(2025, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            PaymentDate = new DateTime(2025, 8, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             ShopId = 1
                         },
                         new
@@ -405,9 +663,63 @@ namespace Infrastructure.Migrations
                             AmountPaid = 12000m,
                             ModeOfPayment = "UPI",
                             OrderId = 2,
-                            PaymentDate = new DateTime(2025, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            PaymentDate = new DateTime(2025, 8, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             ShopId = 2
                         });
+                });
+
+            modelBuilder.Entity("Domain.Entities.Salary", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("BaseSalary")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Bonus")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("DailyRate")
+                        .HasColumnType("float");
+
+                    b.Property<int>("DaysWorked")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DriverId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Month")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("TotalSalary")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DriverId");
+
+                    b.ToTable("Salaries");
                 });
 
             modelBuilder.Entity("Domain.Entities.Shop", b =>
@@ -481,8 +793,6 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("DeliveryId");
 
-                    b.HasIndex("VehicleId");
-
                     b.ToTable("TransportCosts");
 
                     b.HasData(
@@ -490,7 +800,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             Amount = 150.00m,
-                            Date = new DateTime(2025, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            Date = new DateTime(2025, 8, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             DeliveryId = 1,
                             ExpenseType = 0,
                             Notes = "Filled 30L diesel",
@@ -500,7 +810,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 2,
                             Amount = 500.00m,
-                            Date = new DateTime(2025, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            Date = new DateTime(2025, 8, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             DeliveryId = 1,
                             ExpenseType = 1,
                             Notes = "Driver daily wage",
@@ -510,7 +820,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 3,
                             Amount = 70.00m,
-                            Date = new DateTime(2025, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            Date = new DateTime(2025, 8, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             DeliveryId = 1,
                             ExpenseType = 3,
                             Notes = "Highway toll",
@@ -520,7 +830,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 4,
                             Amount = 200.00m,
-                            Date = new DateTime(2025, 7, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            Date = new DateTime(2025, 8, 12, 0, 0, 0, 0, DateTimeKind.Local),
                             ExpenseType = 2,
                             Notes = "Oil change and check-up",
                             VehicleId = 1
@@ -539,9 +849,21 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastLoginAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -558,6 +880,9 @@ namespace Infrastructure.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
                         .IsRequired()
@@ -576,7 +901,9 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             ContactNo = "+917200806208",
+                            CreatedAt = new DateTime(2025, 8, 13, 15, 12, 18, 907, DateTimeKind.Utc).AddTicks(2679),
                             FirstName = "Visu",
+                            IsActive = true,
                             LastName = "",
                             Location = "Marandahalli",
                             PasswordHash = new byte[0],
@@ -588,7 +915,9 @@ namespace Infrastructure.Migrations
                         {
                             Id = 2,
                             ContactNo = "+917200806208",
+                            CreatedAt = new DateTime(2025, 8, 13, 15, 12, 18, 907, DateTimeKind.Utc).AddTicks(2682),
                             FirstName = "Visu1",
+                            IsActive = true,
                             LastName = "",
                             Location = "Marandahalli",
                             PasswordHash = new byte[0],
@@ -606,8 +935,51 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("CapacityInKg")
                         .HasColumnType("float");
+
+                    b.Property<double>("CurrentMileage")
+                        .HasColumnType("float");
+
+                    b.Property<double>("FuelEfficiency")
+                        .HasColumnType("float");
+
+                    b.Property<string>("FuelType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("InsuranceExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InsuranceNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastMaintenanceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("NextMaintenanceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PurchaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("PurchasePrice")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -617,6 +989,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Vehicles");
@@ -625,14 +1000,28 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
+                            Brand = "Tata",
                             CapacityInKg = 400.0,
+                            CurrentMileage = 0.0,
+                            FuelEfficiency = 0.0,
+                            FuelType = "Diesel",
+                            IsActive = true,
+                            Model = "Ace",
+                            PurchaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PurchasePrice = 0.0,
+                            Status = "Active",
                             Type = "Small Van",
-                            VehicleNumber = "TN01AA1234"
+                            VehicleNumber = "TN01AA1234",
+                            Year = 0
                         });
                 });
 
             modelBuilder.Entity("Domain.Entities.ChickenBatch", b =>
                 {
+                    b.HasOne("Domain.Entities.Delivery", null)
+                        .WithMany("ChickenBatches")
+                        .HasForeignKey("DeliveryId");
+
                     b.HasOne("Domain.Entities.Farm", "Farmer")
                         .WithMany()
                         .HasForeignKey("FarmerId")
@@ -642,29 +1031,90 @@ namespace Infrastructure.Migrations
                     b.Navigation("Farmer");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Delivery", b =>
+            modelBuilder.Entity("Domain.Entities.DailyWorkLog", b =>
                 {
+                    b.HasOne("Domain.Entities.Driver", "Assistant")
+                        .WithMany("AssistantWorkLogs")
+                        .HasForeignKey("AssistantId");
+
                     b.HasOne("Domain.Entities.Driver", "Driver")
-                        .WithMany()
+                        .WithMany("WorkLogs")
                         .HasForeignKey("DriverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.FarmStock", "FarmStock")
-                        .WithMany()
-                        .HasForeignKey("FarmStockId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.Vehicle", "Vehicle")
-                        .WithMany()
+                        .WithMany("WorkLogs")
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Assistant");
+
                     b.Navigation("Driver");
 
-                    b.Navigation("FarmStock");
+                    b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Delivery", b =>
+                {
+                    b.HasOne("Domain.Entities.Driver", "Assistant")
+                        .WithMany("AssistantDeliveries")
+                        .HasForeignKey("AssistantId");
+
+                    b.HasOne("Domain.Entities.Driver", "Driver")
+                        .WithMany("Deliveries")
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Vehicle", "Vehicle")
+                        .WithMany("Deliveries")
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Assistant");
+
+                    b.Navigation("Driver");
+
+                    b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("Domain.Entities.DeliveryDetail", b =>
+                {
+                    b.HasOne("Domain.Entities.Delivery", "Delivery")
+                        .WithMany("DeliveryDetails")
+                        .HasForeignKey("DeliveryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Shop", "Shop")
+                        .WithMany()
+                        .HasForeignKey("ShopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Delivery");
+
+                    b.Navigation("Shop");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Expense", b =>
+                {
+                    b.HasOne("Domain.Entities.Driver", "Driver")
+                        .WithMany("Expenses")
+                        .HasForeignKey("DriverId");
+
+                    b.HasOne("Domain.Entities.User", null)
+                        .WithMany("Expenses")
+                        .HasForeignKey("UserId");
+
+                    b.HasOne("Domain.Entities.Vehicle", "Vehicle")
+                        .WithMany("Expenses")
+                        .HasForeignKey("VehicleId");
+
+                    b.Navigation("Driver");
 
                     b.Navigation("Vehicle");
                 });
@@ -679,7 +1129,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
                     b.HasOne("Domain.Entities.Delivery", "Delivery")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("DeliveryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -714,33 +1164,65 @@ namespace Infrastructure.Migrations
                     b.Navigation("Shop");
                 });
 
-            modelBuilder.Entity("Domain.Entities.TransportCost", b =>
+            modelBuilder.Entity("Domain.Entities.Salary", b =>
                 {
-                    b.HasOne("Domain.Entities.Delivery", "Delivery")
-                        .WithMany("TransportCosts")
-                        .HasForeignKey("DeliveryId");
-
-                    b.HasOne("Domain.Entities.Vehicle", "Vehicle")
-                        .WithMany()
-                        .HasForeignKey("VehicleId")
+                    b.HasOne("Domain.Entities.Driver", "Driver")
+                        .WithMany("Salaries")
+                        .HasForeignKey("DriverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Delivery");
+                    b.Navigation("Driver");
+                });
 
-                    b.Navigation("Vehicle");
+            modelBuilder.Entity("Domain.Entities.TransportCost", b =>
+                {
+                    b.HasOne("Domain.Entities.Delivery", null)
+                        .WithMany("TransportCosts")
+                        .HasForeignKey("DeliveryId");
                 });
 
             modelBuilder.Entity("Domain.Entities.Delivery", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("ChickenBatches");
+
+                    b.Navigation("DeliveryDetails");
 
                     b.Navigation("TransportCosts");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Driver", b =>
+                {
+                    b.Navigation("AssistantDeliveries");
+
+                    b.Navigation("AssistantWorkLogs");
+
+                    b.Navigation("Deliveries");
+
+                    b.Navigation("Expenses");
+
+                    b.Navigation("Salaries");
+
+                    b.Navigation("WorkLogs");
                 });
 
             modelBuilder.Entity("Domain.Entities.Farm", b =>
                 {
                     b.Navigation("FarmStocks");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Navigation("Expenses");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Vehicle", b =>
+                {
+                    b.Navigation("Deliveries");
+
+                    b.Navigation("Expenses");
+
+                    b.Navigation("WorkLogs");
                 });
 #pragma warning restore 612, 618
         }
